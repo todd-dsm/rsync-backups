@@ -36,7 +36,7 @@ After that you can just execute the script based on the OS below. It goes pretty
 ## Server (Linux)
 `./install-backups.sh --server`
 
-The output in the terminal will tell you the rest. If you don't change anything you'll be backing at midnight 7 days a week. Here are some helpful(?) resources:
+The output in the terminal will tell you the rest. If you don't change anything you'll be backing at midnight 7 days a week. Incrementals go to the days of the week; moday, tuesday, etc. Full backups go to the 'current' directory; nearly everything you need to recover will be there. Here are some helpful(?) resources:
 
 * Editing the [crontab file](https://youtu.be/UlVqobmcPuM?t=2m16s).
 * Setting [another schedule](https://crontab.guru/); one that's right for you.
