@@ -16,7 +16,7 @@ set -x
 declare dryRun="$1"
 declare backupHome="$HOME/.config/rsync"
 declare excludeFiles="$backupHome/excludes"
-declare backupVol='/Volumes/mVault'
+declare backupVol='/Volumes/usbDrive'
 declare backupDir="test"
 declare backupDest="$backupVol/$backupDir"
 #declare myHost="$(hostname)"
