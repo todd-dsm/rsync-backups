@@ -12,19 +12,19 @@ You are more than welcome to use thist stuff to backup your system(s), I do. Her
 
 * To determine the name of your backup volume (backupVol) just plug it in and:
 
-`ls -l /Volumes/` you'll see everything listed under that directory. Let's say it's called `myusb`. You would set that by: (for example)
+`ls -l /Volumes/` you'll see everything listed under that directory. Let's say it's called `storage`. You would set that by: (for example)
 
 Using [sed] to replace `'usbDrive'` with the name of your volume:
 
-`sed -i '/backupVol/ s/usbDrive/myusb/g' sources/macos_backups.sh`
+`sed -i '/backupVol/ s/storage/myVolumeName/g' sources/macos_backups.sh`
 
 3. You'll want to specify a directory (backupDir) within that volume.
 
-`mkdir -p /Volumes/myusb/backups`
+`mkdir -p /Volumes/storage/backups`
 
-Then set that in the same file as well; use sed to replace `'test'` with your backup directory name.
+Then set that in the same file as well; use sed to replace `'backups'` with your backup directory name.
 
-`sed -i '/backupDir/ s/test/mybackups/g' sources/macos_backups.sh`
+`sed -i '/backupDir/ s/backups/myDirName/g' sources/macos_backups.sh`
 
 After that you can just execute the script based on the OS below. It goes pretty quick. Don't be alarmed - it actually worked :-)
 
