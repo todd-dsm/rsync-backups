@@ -108,20 +108,20 @@ mkBackupDirs() {
 ###---
 ### Workstation config
 ###---
-workstation_backups() {
-    rsyncHome="$HOME/.config/rsync"
-    instBackupScript='sources/linux_backups.sh'
-    destBackupScript="$rsyncHome/backups"
-    instExcludes='sources/linux_excludes'
-    destExcludes="$rsyncHome/excludes"
-    printf '\n\n%s\n' "Installing backup script, et al."
-    mkBackupDirs "$rsyncHome/logs"
-    yes | cp -pv "$instBackupScript" "$destBackupScript"
-    yes | cp -pv "$instExcludes" "$destExcludes"
-    printf '\n%s\n' "Insuring proper permissions."
-    chmod u+x "$destBackupScript"
-    success_message "$destBackupScript"
-}
+#workstation_backups() {
+#    rsyncHome="$HOME/.config/rsync"
+#    instBackupScript='sources/linux_backups.sh'
+#    destBackupScript="$rsyncHome/backups"
+#    instExcludes='sources/linux_excludes'
+#    destExcludes="$rsyncHome/excludes"
+#    printf '\n\n%s\n' "Installing backup script, et al."
+#    mkBackupDirs "$rsyncHome/logs"
+#    yes | cp -pv "$instBackupScript" "$destBackupScript"
+#    yes | cp -pv "$instExcludes" "$destExcludes"
+#    printf '\n%s\n' "Insuring proper permissions."
+#    chmod u+x "$destBackupScript"
+#    success_message "$destBackupScript"
+#}
 
 ###---
 ### macOS Config
@@ -129,13 +129,11 @@ workstation_backups() {
 macos_backups() {
     rsyncHome="$HOME/.config/rsync"
     instBackupScript='sources/macos_backups.sh'
-    destBackupScript="$rsyncHome/backups"
     instExcludes='sources/macos_excludes'
-    destExcludes="$rsyncHome/excludes"
+    instSpecFiles='sources/special-backups.conf'
     printf '\n\n%s\n' "Installing backup script, et al."
     mkBackupDirs "$rsyncHome/logs"
-    yes | cp -pv "$instBackupScript" "$destBackupScript"
-    yes | cp -pv "$instExcludes" "$destExcludes"
+    cp -fpv "$instBackupScript" "$instExcludes" "$instSpecFiles" "$rsyncHome"
     printf '\n%s\n' "Insuring proper permissions."
     chmod u+x "$destBackupScript"
     success_message "$destBackupScript"
@@ -144,40 +142,36 @@ macos_backups() {
 ###---
 ### Server Config
 ###---
-server_backups() {
-    rsyncHome="$HOME/.config/rsync"
-    instBackupScript='sources/server_backups.sh'
-    destBackupScript="$rsyncHome/backups"
-    instExcludes='sources/server_excludes'
-    destExcludes="$rsyncHome/excludes"
-    printf '\n\n%s\n' "Installing backup script, et al."
-    mkBackupDirs "$rsyncHome/logs"
-    yes | cp -pv "$instBackupScript" "$destBackupScript"
-    yes | cp -pv "$instExcludes" "$destExcludes"
-    printf '\n%s\n' "Insuring proper permissions."
-    chmod u+x "$destBackupScript"
-    success_message "$destBackupScript"
-}
+#server_backups() {
+#    rsyncHome="$HOME/.config/rsync"
+#    instBackupScript='sources/server_backups.sh'
+#    destBackupScript="$rsyncHome/backups"
+#    instExcludes='sources/server_excludes'
+#    printf '\n\n%s\n' "Installing backup script, et al."
+#    mkBackupDirs "$rsyncHome/logs"
+#    cp -fpv "$instBackupScript" "$instExcludes" "$rsyncHome"
+#    printf '\n%s\n' "Insuring proper permissions."
+#    chmod u+x "$destBackupScript"
+#    success_message "$destBackupScript"
+#}
 
 ###---
 ### These 2 functions only exist to test this script. They should only be used
 ### when further expanding it.
 ###---
-print_error_noval() {
-    printf 'ERROR: "--file" requires a non-empty option argument.\n' >&2
-    exit 1
-}
-# FUNCTION: confirm the argument value is non-zero and
-test_opts() {
-    myVar=$1
-    if [[ -n "$myVar" ]]; then
-        export retVal="$myVar"
-    else
-        print_error_novas
-    fi
-}
-
-
+#print_error_noval() {
+#    printf 'ERROR: "--file" requires a non-empty option argument.\n' >&2
+#    exit 1
+#}
+## FUNCTION: confirm the argument value is non-zero and
+#test_opts() {
+#    myVar=$1
+#    if [[ -n "$myVar" ]]; then
+#        export retVal="$myVar"
+#    else
+#        print_error_novas
+#    fi
+#}
 
 
 ###-----------------------------------------------------------------------------
@@ -244,9 +238,3 @@ done
 ### fin~
 ###---
 exit 0
-
-
-
-
-
-
