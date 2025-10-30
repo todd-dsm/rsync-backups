@@ -72,13 +72,16 @@ success_message() {
     printf '\n%s\n\n' """
         The files supporting backups have been installed!
 
-        However, you still need to schedule it to run by editng the crontab.
+        Exclusion patterns defined here:
+        https://download.samba.org/pub/rsync/rsync.1
+
+        Backups could be scheduled by adding this to crontab
         See this video for help: https://youtu.be/UlVqobmcPuM?t=2m16s
         $ crontab -e
 
         Then add a job that looks something like this:
         # Nightly backup jobs
-        @daily \"\$HOME/${myBackupScript}\"   >  /dev/null 2>&1
+        @daily \"\$HOME/${myBackupScript}\" > /dev/null 2>&1
 
         See: https://crontab.guru/ for more on crontab scheduling options.
     """
@@ -129,11 +132,15 @@ mkBackupDirs() {
 macos_backups() {
     rsyncHome="$HOME/.config/rsync"
     instBackupScript='sources/macos_backups.sh'
+    destBackupScript="$rsyncHome/backups"
     instExcludes='sources/macos_excludes'
+    destExcludes="$rsyncHome/excludes"
     instSpecFiles='sources/special-backups.conf'
     printf '\n\n%s\n' "Installing backup script, et al."
     mkBackupDirs "$rsyncHome/logs"
-    cp -fpv "$instBackupScript" "$instExcludes" "$instSpecFiles" "$rsyncHome"
+    cp -fpv "$instBackupScript" "$destBackupScript"
+    cp -fpv "$instExcludes" "$destExcludes"
+    cp -fpv "$instSpecFiles" "$rsyncHome"
     printf '\n%s\n' "Insuring proper permissions."
     chmod u+x "$destBackupScript"
     success_message "$destBackupScript"
