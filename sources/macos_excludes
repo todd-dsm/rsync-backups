@@ -37,7 +37,6 @@ Documents/Zoom/
 .zcompdump*
 /.zsh_sessions/
 /.bash_sessions/
-/.lesshst/
 /.python_history
 .terminfo/
 .terminfo/78/
@@ -52,8 +51,13 @@ Documents/Zoom/
 /.terraform/
 .terraform*
 /.m1-terraform-provider-helper/
-/go/
-go*
+# Go language - exclude dependencies
+go/pkg/mod/***
+bin/***
+pkg/***
+go/pkg/sumdb/***
+pkg/mod
+src/github.com
 /bundle/
 bundle
 /.bundle/
@@ -188,6 +192,7 @@ Microsoft*
 .cups*
 .datree/
 .DS_Store
+/.lesshst/
 /.lesshst
 .lesshst
 /.local/
