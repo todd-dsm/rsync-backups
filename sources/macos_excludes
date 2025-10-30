@@ -1,37 +1,242 @@
-# These things SHOULD NOT be backed up:
-#*.vmdk
-#.mozilla
-#.pip
-#.pki
-#.python-eggs
-#.subversion
+# rsync exclude patterns for macOS backup
+# Generated: 2025-10-29
+# Usage: rsync -av --exclude-from=this-file source/ destination/
+
+# -----------------------------------------------------------------------------
+# VIRTUAL MACHINES & CONTAINERS
+# -----------------------------------------------------------------------------
+/Library/
+/Virtual Machines.localized/
+/Parallels/
+/vms/
+/.docker/
+/.docker-volumes/
+/.minikube/
+/.rd/
+/.tart/
+/.lima/
+/.vagrant/
+*.vmdk
 *.box
-*.gem
-*postflight*
-.DS_Store
-.Trash
-.atom/
-.bash_sessions/
-.bundle
-.docker
-.docker-volumes
-.kodi
-.oracle*
-.vagrant
-.webex
-Applications
-Downloads
-Dropbox
-InVision
-Library*
-Microsoft*
-backup-*.log
 boot2docker.iso
+
+# -----------------------------------------------------------------------------
+# DOWNLOADS, TRASH & TEMPORARY
+# -----------------------------------------------------------------------------
+/Downloads/
+/Dropbox/
+/.Trash/
+/InVision/
+backup-*.log
+*.iso
+Documents/Zoom/
+
+# -----------------------------------------------------------------------------
+# SHELL, TERMINAL & HISTORY
+# -----------------------------------------------------------------------------
+.zcompdump*
+/.zsh_sessions/
+/.bash_sessions/
+/.lesshst/
+/.python_history
+.terminfo/
+.terminfo/78/
+.viminfo
+
+# -----------------------------------------------------------------------------
+# DEVELOPMENT TOOLS & CACHES
+# -----------------------------------------------------------------------------
+/.cache/
+/.ansible/
+/.terraform.d/
+/.terraform/
+.terraform*
+/.m1-terraform-provider-helper/
+/go/
+go*
+/bundle/
 bundle
-vms/vagrant/data/
-vms/vagrant/gems
-vms/vagrant/rgloader/
-vms/vagrant/tmp/
-vms/vagrant/vagrant/
-vms/vmware/
-vms/vmware/osx/
+/.bundle/
+.bundle
+/.bun/
+.bun*
+/.bin/
+.bin*
+/.gem/
+*.gem
+/.oracle/
+.oracle*
+/.ec2/
+.ec2*
+/.lemminx/
+.lemminx*
+/.kuberlr/
+.kuberlr*
+/.krew/
+.krew*
+/.pack/
+/.pip/
+/.redhat/
+.redhat*
+/.vim/
+.vim/
+.vim/after/
+.vim/after/ftplugin/
+.vim/autoload/
+.vim/colors/
+.vim/docs/
+.vim/ftdetect/
+.vim/vimrcs/
+/.vimrc
+
+# -----------------------------------------------------------------------------
+# OTHER CONFIG SUBDIRECTORIES
+# -----------------------------------------------------------------------------
+/.config/AWSVPNClient/
+/.config/fish/
+.config/fish*
+/.config/jgit/
+.config/jgit*
+/.config/gh/
+/.config/github-copilot/
+/.config/gcloud/
+.config/gcloud*
+/.config/iterm2/
+.config/iterm2*
+/.config/k9s/
+/.config/k3d/
+.config/k3d*
+/.config/node/
+.config/node*
+/.config/packer/
+/.config/python/
+/.config/term/
+/.config/yarn/
+.config/yarn*
+
+# -----------------------------------------------------------------------------
+# CLOUD & DEPLOYMENT TOOLS
+# -----------------------------------------------------------------------------
+/.appgatesdp/
+.appgatesdp*
+/.gsutil/
+/.webex/
+.webex
+
+# -----------------------------------------------------------------------------
+# KUBERNETES
+# -----------------------------------------------------------------------------
+/.kube/cache/
+.kube/cache*
+/.kube/http-cache/
+.kube/http-cache*
+/.kube/plugins/
+.kube/plugins*
+/.k8slens/
+.k8slens*
+/.tcshrc
+
+# -----------------------------------------------------------------------------
+# IDE & EDITORS
+# -----------------------------------------------------------------------------
+/.vscode/
+.vscode*
+/.cursor/
+.cursor*
+/.atom/
+.atom/
+/.idea/
+.idea*
+/.gitkraken/
+
+# -----------------------------------------------------------------------------
+# NODE/JS ECOSYSTEM
+# -----------------------------------------------------------------------------
+/.npm/
+.npm*
+/.pnpm/
+.pnpm*
+/.yarn/
+.yarn/
+.yarn/bin/
+node_modules/
+
+# -----------------------------------------------------------------------------
+# MEDIA & APPLICATIONS
+# -----------------------------------------------------------------------------
+/.android/
+.android*
+/.kodi/
+.kodi
+/Applications/
+Applications
+/Microsoft/
+Microsoft*
+
+# -----------------------------------------------------------------------------
+# DATABASE TOOLS
+# -----------------------------------------------------------------------------
+.pgadmin/
+.pgadmin/azurecredentialcache/
+.pgadmin/sessions/
+.pgadmin/storage/
+
+# -----------------------------------------------------------------------------
+# SYSTEM FILES (at any depth)
+# -----------------------------------------------------------------------------
+.cups/
+.cups*
+.datree/
+.DS_Store
+/.lesshst
+.lesshst
+/.local/
+.local*
+*.log
+*postflight*
+.git*
+
+# -----------------------------------------------------------------------------
+# BUILD ARTIFACTS & CACHES (at any depth)
+# -----------------------------------------------------------------------------
+.git/
+__pycache__/
+.venv/
+venv/
+.next/
+dist/
+build/
+target/
+
+# -----------------------------------------------------------------------------
+# PARTIAL INCLUDES - Special Rules (order matters!)
+# -----------------------------------------------------------------------------
+
+# Include only .oh-my-zsh/custom/
++ /.oh-my-zsh/
++ /.oh-my-zsh/custom/***
+- /.oh-my-zsh/*
+
+# Include only .aws/{config,credentials}
++ /.aws/
++ /.aws/config
++ /.aws/credentials
+- /.aws/cli
+- /.aws/sso
+- /.aws/sso/cache/
+- /.aws/*
+
+# Include only specific code subdirectories
+- /code/client/
+- code/client*
+
+# -----------------------------------------------------------------------------
+# OPTIONAL (commented out - uncomment if needed)
+# -----------------------------------------------------------------------------
+#/.mozilla/
+#.mozilla
+#/.pip/
+#.pip
+#/.pki/
+#.pki
+#*.vmdk
