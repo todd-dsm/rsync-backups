@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #  PURPOSE: backup "$HOME" files to $backupDest with:
-#               * 7 day rotating incremental backup 
+#               * 7 day rotating incremental backup
 #               * incrementals are named after the day of the week
 #               * "current" is always a full backup with the latest files.
 #           Inspired by:
@@ -15,7 +15,7 @@
 # -----------------------------------------------------------------------------
 #   AUTHOR: todd-dsm (github)
 # -----------------------------------------------------------------------------
-set -xeuo pipefail
+set -euo pipefail
 
 # -----------------------------------------------------------------------------
 # VARIABLES
@@ -55,15 +55,15 @@ specialDest="$HOME/.config/admin/backup"
 if [ -f "$specialBackups" ]; then
     echo "Backing up special ~/Library configs"
     mkdir -p "$specialDest"
-    
+
     while IFS=, read -r program source_path || [ -n "$program" ]; do
         # Skip empty lines and comments
         [[ -z "$program" || $program = \#* ]] && continue
-        
+
         # prep the names
         source_file="$HOME/$source_path"
         filename="${source_path##*/}"
-        
+
         if [ -f "$source_file" ]; then
             cp "$source_file" "$specialDest/${program}-${filename}"
             echo "  ✓ $program"
