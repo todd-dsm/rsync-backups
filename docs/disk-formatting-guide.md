@@ -24,7 +24,7 @@ diskutil list external
 
 On my system the *physical* disk is `disk4`; however yours may be different. The others (internal) are managed by macOS; ignore and never modify them. At this point we have a functional device but we still can't use it for storage yet.
 
-## macOS Navtive
+## macOS Native
 
 If you only work on macOS and never have to deal with Linux or Windows then this is the default option.
 
