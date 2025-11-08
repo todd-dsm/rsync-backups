@@ -1,6 +1,6 @@
 # rsync-backups
 
-The rsync script for macOS backups. All you need to get started is an inexpensive USB flash drive.
+The rsync script for macOS backups. All you need to get started is an inexpensive USB flash drive and about 15 minutes.
 
 ## Getting Started
 
