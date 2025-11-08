@@ -40,6 +40,8 @@ Format: APFS
 Scheme: GUID Partition Map
 ```
 
+The official [Apple Storage Support] docs.
+
 The command line equivalent:
 
 ```shell
@@ -159,3 +161,7 @@ disk4 (Physical - 500 GB)
 ```
 
 All three volumes share the 500 GB pool dynamically and grows as needed. This is the standard modern macOS setup - efficient and flexible, *elegant*.
+
+<!-- docs/refs -->
+
+[Apple Storage Support]:https://support.apple.com/guide/disk-utility/erase-and-reformat-a-storage-device-dskutl14079/mac

@@ -6,7 +6,17 @@ The rsync script for macOS backups. All you need to get started is an inexpensiv
 
 ### Format the Drive
 
-Follow along to [format the drive] while renaming it `storage`; everything will fall into place after that.
+If you only work on macOS then this is the most flexible option:
+
+1. Open the macOS Disk Utility
+2. highlight your device and
+3. format with these options:
+
+```shell
+Name: storage
+Format: APFS
+Scheme: GUID Partition Map
+```
 
 Validate that the volume mounts on the system:
 
@@ -26,6 +36,8 @@ drwxr-xr-x 3 root    96 Jun 11  2022  Data
 lrwxr-xr-x 1 root     1 Oct 31 07:59 'Macintosh HD' -> /
 drwxrwxr-x 5 $USER  160 Oct 24 09:05  storage <- success!
 ```
+
+There is a longer explanation on [macOS Storage options] if needed.
 
 ### Install the Backup Script
 
@@ -99,6 +111,6 @@ TT
 
 <!-- docs/refs -->
 
+[macOS Storage options]:https://github.com/todd-dsm/rsync-backups/blob/master/docs/disk-formatting-guide.md
 [crontab file]:https://youtu.be/UlVqobmcPuM?t=2m16s
 [another schedule]:https://crontab.guru/
-[format the drive]:https://support.apple.com/guide/disk-utility/erase-and-reformat-a-storage-device-dskutl14079/mac
