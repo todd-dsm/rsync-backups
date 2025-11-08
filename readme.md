@@ -61,7 +61,7 @@ The script places these files here:
 2 directories, 4 files
 ```
 
-NOTE: the files added to `special-backups.conf` will be included in backups while the `excludes` list will, of course, omit files/paths from backups; edit these files to suit your needs.
+NOTE: the files added to `special-backups.conf` will be included in backups while the `excludes` list will, of course, omit files/paths from backups; edit these files to suit your needs. There's a more in-depth [description of exceptions] elsewher.
 
 ## Execute Backups
 
@@ -112,5 +112,6 @@ TT
 <!-- docs/refs -->
 
 [macOS Storage options]:https://github.com/todd-dsm/rsync-backups/blob/master/docs/disk-formatting-guide.md
+[description of exceptions]:https://github.com/todd-dsm/rsync-backups/blob/master/docs/exceptions.md
 [crontab file]:https://youtu.be/UlVqobmcPuM?t=2m16s
 [another schedule]:https://crontab.guru/
