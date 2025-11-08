@@ -1,5 +1,7 @@
 # macOS Disk Utility Formatting Guide
 
+Below are some common cases and storage management options.
+
 ## Use Case Comparison
 
 | Use Case | Format | Scheme | Notes |
@@ -19,14 +21,18 @@ First, plugin the USB flash drive and determine the disk index number:
 diskutil list external
 /dev/disk4 (external, physical):
    #:                       TYPE NAME                    SIZE       IDENTIFIER
-   0:      GUID_partition_scheme                        *125.8 GB   disk4
+   0:                                                   *125.8 GB   disk4
 ```
 
 On my system the *physical* disk is `disk4`; however yours may be different. The others (internal) are managed by macOS; ignore and never modify them. At this point we have a functional device but we still can't use it for storage yet.
 
-## macOS Native
+### macOS Formatting Options
 
-If you only work on macOS and never have to deal with Linux or Windows then this is the default option.
+If you only work on macOS and never have to deal with Linux or Windows then this is the most flexible option.
+
+1. Open the macOS Disk Utility
+2. highlight your device and
+3. format with these options:
 
 ```shell
 Name: storage
@@ -34,11 +40,13 @@ Format: APFS
 Scheme: GUID Partition Map
 ```
 
+The command line equivalent:
+
 ```shell
 diskutil eraseDisk APFS storage disk4
 ```
 
-### Validate Expected Results
+#### Validate Expected Results
 
 The (physical) `disk4` has been formated and a logical (synthesized) Volume has been created.
 
@@ -87,7 +95,7 @@ Scheme: GUID Partition Map
 diskutil eraseDisk exFAT storage disk4
 ```
 
-Note: Linux requires exfat-fuse and exfat-utils packages
+*Note: Linux requires exfat-fuse and exfat-utils packages.*
 
 ## Important Notes
 
