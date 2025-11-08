@@ -28,7 +28,8 @@ if [[ "${1:-}" == 'dry-run' ]]; then
 else
     echo "Running LIVE backup"
 fi
- # assignments
+
+# assignments
 backupHome="$HOME/.config/rsync"
 excludeFiles="$backupHome/excludes"
 backupVol='/Volumes/storage'
@@ -42,18 +43,19 @@ rsyncOptions="--archive --backup --human-readable --verbose --stats \
     --exclude-from=$excludeFiles --backup-dir=$dailyBkup"
 loggingParams="--log-file=$backupHome/logs/backup-$bkupDay.log"
 
+# Backup special application configs from external file
+specialBackups="$backupHome/special-backups.conf"
+specialDest="$HOME/.config/admin/backup"
+
 # -----------------------------------------------------------------------------
 # MAIN PROGRAM
 # -----------------------------------------------------------------------------
 # PREREQ: Ensure logs directory exists
 [ -d "$backupHome/logs" ] || mkdir -p "$backupHome/logs"
-
-# Backup special application configs from external file
-specialBackups="$backupHome/special-backups.conf"
-specialDest="$HOME/.config/admin/backup"
+[ -d "$specialDest" ] || mkdir -p "$specialDest"
 
 if [ -f "$specialBackups" ]; then
-    echo "Backing up special ~/Library configs"
+    echo "Backing up special configs"
     mkdir -p "$specialDest"
 
     while IFS=, read -r program source_path || [ -n "$program" ]; do
@@ -66,9 +68,9 @@ if [ -f "$specialBackups" ]; then
 
         if [ -f "$source_file" ]; then
             cp "$source_file" "$specialDest/${program}-${filename}"
-            echo "  ✓ $program"
+            echo "  $program"
         else
-            echo "  ⚠ $program (file not found: $source_path)"
+            echo "  $program (file not found: $source_path)"
         fi
     done < "$specialBackups"
 fi
