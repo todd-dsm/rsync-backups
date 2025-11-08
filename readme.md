@@ -4,11 +4,9 @@ The rsync script for macOS backups. All you need to get started is an inexpensiv
 
 ## Getting Started
 
-Format any USB flash drive with a functional port and execute the install script.
-
 ### Format the Drive
 
-Follow along to [format the drive] and rename to: `storage`; everything will fall into place after that.
+Follow along to [format the drive] while renaming it `storage`; everything will fall into place after that.
 
 Validate that the volume mounts on the system:
 
@@ -20,8 +18,6 @@ Validate that the volume mounts on the system:
 ...
 /dev/disk5s1 on /Volumes/storage (apfs, local, nodev, nosuid, journaled, noowners) <- success!
 ```
-
-`ls -l /Volumes/` you'll see everything listed under that directory. Let's say it's called `storage`. You would set that by: (for example)
 
 ```shell
 % ls -l /Volumes
@@ -53,7 +49,7 @@ The script places these files here:
 2 directories, 4 files
 ```
 
-NOTE: `special-backups.conf` will be included with backups while the `excludes` list will, of course, omit files/paths from backups; edit these files to suit your needs.
+NOTE: the files added to `special-backups.conf` will be included in backups while the `excludes` list will, of course, omit files/paths from backups; edit these files to suit your needs.
 
 ## Execute Backups
 
@@ -63,7 +59,7 @@ It's probably best to test everything first; execute:
 % ~/.config/rsync/backups dry-run 2>&1 | tee /tmp/backups.log
 ```
 
-After that you can drop the `dry-run` and it will backup your `$HOME`. It goes pretty quick if you don't have many files; don't be alarmed - it actually worked :-)
+After that you can drop the `dry-run` and it will backup your `$HOME`. If you don't have many files don't be alarmed - it likely flew right by and actually worked :-)
 
 ## Schedule Backups
 
@@ -71,13 +67,13 @@ Edit the chrontab file to schedule the backups: `crontab -e`
 
 Paste this into the crontab:
 
-`@daily "$HOME/.config/rsync/backups"   >  /dev/null 2>&1`
+`@daily "$HOME/.config/rsync/backups" > /dev/null 2>&1`
 
 If you don't change anything you'll be:
 
 * backing-up 7 days a week at midnight
 
-* the first one is full, subsequent back-ups are incremental
+* the first one is full (current), subsequent back-ups are incremental (days of the week)
 
 * The latest stuff is always in the 'current' directory; everything you need to recover will be there. Here are some helpful resources:
   * Editing the [crontab file]
@@ -88,7 +84,7 @@ It should look like this after a few runs:
 ```shell
 % tree -d -L 1 /Volumes/storage/backups/$USER
 /Volumes/storage/backups/$USER
-├── current <- restore from here
+├── current <- latest; restore from here
 ├── friday
 ├── monday
 ├── tuesday
