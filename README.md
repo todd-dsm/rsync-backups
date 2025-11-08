@@ -1,50 +1,73 @@
 # rsync-backups
 
-Various reusable rsync scripts for Linux and macOS.
+The rsync script for macOS backups. All you need to get started is an inexpensive USB flash drive.
 
-You are more than welcome to use thist stuff to backup your system(s), I do. Here's what you have to know:
+## Getting Started
 
-1. It's not done yet; only the macOS backup is deemed "solid" and even that can change.
+Format any USB flash drive with a functional port and execute the install script.
 
-2. I backup to a USB 3 drive available at `/Volumes/storage/`.
+### Format the Drive
 
-* Anyone that uses this will as well.
+Follow along to [format the drive] and rename to: `storage`; everything will fall into place after that.
 
-* To determine the name of your backup volume (backupVol) just plug it in and:
+Validate that the volume mounts on the system:
+
+```shell
+% mount | sort
+/dev/disk1s1 on /System/Volumes/iSCPreboot (apfs, local, journaled, nobrowse)
+/dev/disk1s2 on /System/Volumes/xarts (apfs, local, noexec, journaled, noatime, nobrowse)
+/dev/disk1s3 on /System/Volumes/Hardware (apfs, local, journaled, nobrowse)
+...
+/dev/disk5s1 on /Volumes/storage (apfs, local, nodev, nosuid, journaled, noowners) <- success!
+```
 
 `ls -l /Volumes/` you'll see everything listed under that directory. Let's say it's called `storage`. You would set that by: (for example)
 
-Using [sed] to replace `'usbDrive'` with the name of your volume:
+```shell
+% ls -l /Volumes
+total 0
+drwxr-xr-x 3 root    96 Jun 11  2022  Data
+lrwxr-xr-x 1 root     1 Oct 31 07:59 'Macintosh HD' -> /
+drwxrwxr-x 5 $USER  160 Oct 24 09:05  storage <- success!
+```
 
-`sed -i '/backupVol/ s/storage/myVolumeName/g' sources/macos_backups.sh`
+### Install the Backup Script
 
-3. You'll want to specify a directory (backupDir) within that volume.
+Clone this repo and execute:
 
-`mkdir -p /Volumes/storage/backups`
+`% ./install-backups.sh --macos`
 
-Then set that in the same file as well; use sed to replace `'backups'` with your backup directory name.
+*NOTE: This may support other OSs someday (but probably not).*
 
-`sed -i '/backupDir/ s/backups/myDirName/g' sources/macos_backups.sh`
+The script places these files here:
 
-After that you can just execute the script based on the OS below. It goes pretty quick. Don't be alarmed - it actually worked :-)
+```shell
+% tree ~/.config/rsync
+/Users/$USER/.config/rsync
+├── backups
+├── excludes
+├── logs
+│   └── backup-friday.log
+└── special-backups.conf
 
-## macOS
+2 directories, 4 files
+```
 
-`./install-backups.sh --macos`
+NOTE: `special-backups.conf` will be included with backups while the `excludes` list will, of course, omit files/paths from backups; edit these files to suit your needs.
 
-## Linux (Workstation)
+## Execute Backups
 
-`./install-backups.sh --linux`
+It's probably best to test everything first; execute:
 
-## Server (Linux)
+```shell
+% ~/.config/rsync/backups dry-run 2>&1 | tee /tmp/backups.log
+```
 
-`./install-backups.sh --server`
+After that you can drop the `dry-run` and it will backup your `$HOME`. It goes pretty quick if you don't have many files; don't be alarmed - it actually worked :-)
 
-The output in the terminal will tell you the rest.
+## Schedule Backups
 
-## The crontab
-
-To edit the chrontab file: `crontab -e`
+Edit the chrontab file to schedule the backups: `crontab -e`
 
 Paste this into the crontab:
 
@@ -60,10 +83,26 @@ If you don't change anything you'll be:
   * Editing the [crontab file]
   * Setting [another schedule]; one that's right for you.
 
+It should look like this after a few runs:
+
+```shell
+% tree -d -L 1 /Volumes/storage/backups/$USER
+/Volumes/storage/backups/$USER
+├── current <- restore from here
+├── friday
+├── monday
+├── tuesday
+└── wednesday
+```
+
+I generally just run it a few times per month.
+
 Cheers,
 
 TT
 
-[sed]:http://sed.sourceforge.net/sed1line.txt
+<!-- docs/refs -->
+
 [crontab file]:https://youtu.be/UlVqobmcPuM?t=2m16s
 [another schedule]:https://crontab.guru/
+[format the drive]:https://support.apple.com/guide/disk-utility/erase-and-reformat-a-storage-device-dskutl14079/mac
