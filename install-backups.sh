@@ -11,20 +11,18 @@
 #  PREREQS: a)
 #           b)
 # ------------------------------------------------------------------------------
-#  EXECUTE: ./install-backups.sh --opt1 --opt2
-# ------------------------------------------------------------------------------
-#     TODO: 1) Clean this thing up; so gross.
-#           2) Add sources for Linux Workstation & Linux Server
-# ------------------------------------------------------------------------------
-#   AUTHOR: Todd E Thomas
+#  EXECUTE: ./install-backups.sh --macos
 # ------------------------------------------------------------------------------
 #set -x
+
 
 ###----------------------------------------------------------------------------
 ### Variables
 ###----------------------------------------------------------------------------
 # Variables should be initialized to a default or validated beforehand:
 verbose=0
+rsync_home="$HOME/.config/rsync"
+specf_dest="$HOME/.config/admin/backup"
 
 
 ###----------------------------------------------------------------------------
@@ -88,78 +86,63 @@ success_message() {
 }
 
 ###---
-### Build it!
+### Create supporting directoris
 ###---
 mkBackupDirs() {
-    backupPaths="$1"
-    printf '\n%s\n' "Checking directories for backup script home"
-    if [[ ! -d "$backupPaths" ]]; then
-        printf '%s\n' "  Creating rsync backup script home..."
-        mkdir -p "$backupPaths"
-    else
-        printf '%s\n' """
-        It already exists!
-        Check yourself before you overwrite something important:
-        """
-        printf '%s\n' "${backupPaths%/*}"
-        ls -lh --color "${backupPaths%/*}"
-        printf '%s\n' ""
-        exit
-    fi
+    [ -d "$rsync_home/logs" ] || mkdir -p "$rsync_home/logs"
+    [ -d "$specf_dest" ]      || mkdir -p "$specf_dest"
 }
 
 ###---
 ### Workstation config
 ###---
 #workstation_backups() {
-#    rsyncHome="$HOME/.config/rsync"
-#    instBackupScript='sources/linux_backups.sh'
-#    destBackupScript="$rsyncHome/backups"
-#    instExcludes='sources/linux_excludes'
-#    destExcludes="$rsyncHome/excludes"
+#    src_backup_script='sources/linux_backups.sh'
+#    specf_dest="$rsync_home/backups"
+#    src_excludes='sources/linux_excludes'
+#    dst_excludes="$rsync_home/excludes"
 #    printf '\n\n%s\n' "Installing backup script, et al."
-#    mkBackupDirs "$rsyncHome/logs"
-#    yes | cp -pv "$instBackupScript" "$destBackupScript"
-#    yes | cp -pv "$instExcludes" "$destExcludes"
+#    mkBackupDirs
+#    yes | cp -pv "$src_backup_script" "$specf_dest"
+#    yes | cp -pv "$src_excludes" "$dst_excludes"
 #    printf '\n%s\n' "Insuring proper permissions."
-#    chmod u+x "$destBackupScript"
-#    success_message "$destBackupScript"
+#    chmod u+x "$specf_dest"
+#    success_message "$specf_dest"
 #}
 
 ###---
 ### macOS Config
 ###---
 macos_backups() {
-    rsyncHome="$HOME/.config/rsync"
-    instBackupScript='sources/macos_backups.sh'
-    destBackupScript="$rsyncHome/backups"
-    instExcludes='sources/macos_excludes'
-    destExcludes="$rsyncHome/excludes"
-    instSpecFiles='sources/special-backups.conf'
+    src_backup_script='sources/macos_backups.sh'
+    dst_backup_script="$rsync_home/backups"
+    src_excludes='sources/macos_excludes'
+    dst_excludes="$rsync_home/excludes"
+    src_spec_files='sources/special-backups.conf'
     printf '\n\n%s\n' "Installing backup script, et al."
-    mkBackupDirs "$rsyncHome/logs"
-    cp -fpv "$instBackupScript" "$destBackupScript"
-    cp -fpv "$instExcludes" "$destExcludes"
-    cp -fpv "$instSpecFiles" "$rsyncHome"
+    mkBackupDirs
+    cp -fpv "$src_backup_script" "$dst_backup_script"
+    cp -fpv "$src_excludes" "$dst_excludes"
+    cp -fpv "$src_spec_files" "$rsync_home"
     printf '\n%s\n' "Insuring proper permissions."
-    chmod u+x "$destBackupScript"
-    success_message "$destBackupScript"
+    chmod u+x "$dst_backup_script"
+    success_message "$dst_backup_script"
 }
 
 ###---
 ### Server Config
 ###---
 #server_backups() {
-#    rsyncHome="$HOME/.config/rsync"
-#    instBackupScript='sources/server_backups.sh'
-#    destBackupScript="$rsyncHome/backups"
-#    instExcludes='sources/server_excludes'
+#    rsync_home="$HOME/.config/rsync"
+#    src_backup_script='sources/server_backups.sh'
+#    specf_dest="$rsync_home/backups"
+#    src_excludes='sources/server_excludes'
 #    printf '\n\n%s\n' "Installing backup script, et al."
-#    mkBackupDirs "$rsyncHome/logs"
-#    cp -fpv "$instBackupScript" "$instExcludes" "$rsyncHome"
+#    mkBackupDirs "$rsync_home/logs"
+#    cp -fpv "$src_backup_script" "$src_excludes" "$rsync_home"
 #    printf '\n%s\n' "Insuring proper permissions."
-#    chmod u+x "$destBackupScript"
-#    success_message "$destBackupScript"
+#    chmod u+x "$specf_dest"
+#    success_message "$specf_dest"
 #}
 
 ###---
