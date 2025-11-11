@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#  PURPOSE: backup "$HOME" files to $backupDest with:
+#  PURPOSE: backup "$HOME" files to $backup_dest with:
 #               * 7 day rotating incremental backup 
 #               * incrementals are named after the day of the week
 #               * "current" is always a full backup with the latest files.
@@ -19,9 +19,9 @@ set -euo pipefail
 # VARIABLES
 # -----------------------------------------------------------------------------
 # Toggle dry-run mode
-dryRun=""
+dry_run=""
 if [[ "${1:-}" == 'dry-run' ]]; then
-    dryRun="--dry-run"
+    dry_run="--dry-run"
     printf '\n%s\n' "Running in DRY-RUN mode (no changes will be made)"
 else
     printf '\n%s\n' "Running LIVE backup"
@@ -31,25 +31,25 @@ fi
 rsync_home="$HOME/.config/rsync"
 specf_conf="$rsync_home/special-backups.conf"                                  
 specf_dest="$HOME/.config/admin/backup"                                           
-excludeFiles="$rsync_home/excludes"
-backupVol='/Volumes/storage'
-backupDir="backups"
-backupDest="$backupVol/$backupDir"
-bkupDay="$(date +%A)"
-bkupDay="${bkupDay,,}"
-dailyBkup="$backupDest/$USER/$bkupDay"
-rsyncOptions="--archive --backup --human-readable --verbose --stats \
-    --delete --force --ignore-errors --delete-excluded $dryRun \
-    --exclude-from=$excludeFiles --backup-dir=$dailyBkup"
-loggingParams="--log-file=$rsync_home/logs/backup-$bkupDay.log"
+exclude_list="$rsync_home/excludes"
+backup_vol='/Volumes/storage'
+backup_dir="backups"
+backup_dest="$backup_vol/$backup_dir"
+bkup_day="$(date +%A)"
+bkup_day="${bkup_day,,}"
+daily_bkup="$backup_dest/$USER/$bkup_day"
+log_opts="--log-file=$rsync_home/logs/backup-$bkup_day.log"
+rsync_opts="--archive --backup --human-readable --verbose --stats \
+    --delete --force --ignore-errors --delete-excluded $dry_run \
+    --exclude-from=$exclude_list --backup-dir=$daily_bkup"
 
                                                                                    
 # ----------------------------------------------------------------------------- 
 # MAIN PROGRAM                                                                     
 # ----------------------------------------------------------------------------- 
 # PREREQ: Ensure Volume is mounted
-if [ ! -d "$backupVol" ]; then
-    printf '\n%s\n' "ERROR: Backup volume not mounted at $backupVol"
+if [ ! -d "$backup_vol" ]; then
+    printf '\n%s\n' "ERROR: Backup volume not mounted at $backup_vol"
     exit 1
 fi
 
@@ -84,14 +84,14 @@ done < "$specf_conf"
 # -----------------------------------------------------------------------------
 # Clear incremental directory from last week
 [ -d /tmp/emptydir ] || mkdir -p /tmp/emptydir
-[ -d "$dailyBkup" ]  || mkdir -p "$dailyBkup"
-rsync --delete -a /tmp/emptydir/ "$dailyBkup/"
+[ -d "$daily_bkup" ]  || mkdir -p "$daily_bkup"
+rsync --delete -a /tmp/emptydir/ "$daily_bkup/"
 rmdir /tmp/emptydir
 
 
 # backup $HOME with logging
 printf '\n%s\n' "Backing up $HOME:"
-if ! rsync $rsyncOptions $loggingParams "$HOME/" "$backupDest/$USER/current"; then
+if ! rsync $rsync_opts $log_opts "$HOME/" "$backup_dest/$USER/current"; then
     printf '\n%4s%s\n\n' '' "Backup failed with exit code: $?"
     exit 1
 else
